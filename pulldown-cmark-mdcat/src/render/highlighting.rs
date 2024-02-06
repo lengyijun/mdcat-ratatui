@@ -13,6 +13,8 @@ use std::{
 };
 use syntect::highlighting::{FontStyle, Highlighter, Style, Theme};
 
+use crate::bufferline::BufferLines;
+
 static SOLARIZED_DARK_DUMP: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/theme.dump"));
 static THEME: OnceLock<Theme> = OnceLock::new();
 static HIGHLIGHTER: OnceLock<Highlighter> = OnceLock::new();
@@ -40,8 +42,8 @@ pub fn highlighter() -> &'static Highlighter<'static> {
 ///
 /// Furthermore we completely ignore any background colour settings, to avoid
 /// conflicts with the terminal colour themes.
-pub fn write_as_ansi<'a, W: Write, I: Iterator<Item = (Style, &'a str)>>(
-    writer: &mut W,
+pub fn write_as_ansi<'a, I: Iterator<Item = (Style, &'a str)>>(
+    writer: &mut BufferLines,
     regions: I,
 ) -> Result<()> {
     for (style, text) in regions {
@@ -75,7 +77,13 @@ pub fn write_as_ansi<'a, W: Write, I: Iterator<Item = (Style, &'a str)>>(
             .set(Effects::ITALIC, font.contains(FontStyle::ITALIC))
             .set(Effects::UNDERLINE, font.contains(FontStyle::UNDERLINE));
         let style = anstyle::Style::new().fg_color(color).effects(effects);
-        write!(writer, "{}{}{}", style.render(), text, style.render_reset())?;
+        if text == "\n" {
+            write!(writer, "{}", style.render())?;
+            writer.writeln_buffer();
+            write!(writer, "{}", style.render_reset())?;
+        } else {
+            write!(writer, "{}{}{}", style.render(), text, style.render_reset())?;
+        }
     }
     Ok(())
 }
