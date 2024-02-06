@@ -1,23 +1,19 @@
-# pulldown-cmark-mdcat
+Port [mdcat](https://github.com/swsnr/mdcat) to ratatui
 
-[![Crates.io](https://img.shields.io/crates/v/pulldown-cmark-mdcat)](https://crates.io/crates/pulldown-cmark-mdcat)
-[![docs.rs](https://img.shields.io/docsrs/pulldown-cmark-mdcat)](https://docs.rs/pulldown-cmark-mdcat)
+support image, scrollable
 
-Render [pulldown-cmark] events to a TTY.
+## How to import
+```
+pulldown-cmark-mdcat-ratatui = { git = "https://github.com/lengyijun/mdcat-ratatui" , branch = "ratatui", package = "pulldown-cmark-mdcat" }
+```
 
-This library backs the [mdcat] tool, and makes its rendering available to other crates.
+## Usage
 
-It supports:
-
-- All common mark syntax.
-- Standard ANSI formatting with OCS-8 hyperlinks.
-- Inline images on terminal emulators with either the iTerm2 or the Kitty protocol, as well as on Terminology.
-- Jump marks in iTerm2.
-
-It does not support commonmark table and footnote extension syntax.
-
-[mdcat]: https://github.com/swsnr/mdcat
-[pulldown-cmark]: https://github.com/raphlinus/pulldown-cmark
+See examples/ for details
+```
+cargo run --example slow
+cargo run --example fast
+```
 
 ## License
 
