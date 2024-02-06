@@ -66,6 +66,19 @@ impl PathOrStr {
     }
 
     pub fn get_bufferlines(&self, area: Rect) -> Vec<BufferLine> {
+        let v = self.get_bufferlines_inner(area);
+        v.into_iter()
+            .flat_map(|x| match x {
+                BufferLine::Line(line) => line
+                    .split(|x| *x == 10)
+                    .map(|x| BufferLine::Line(x.to_vec()))
+                    .collect::<Vec<_>>(),
+                BufferLine::Image { .. } => vec![x],
+            })
+            .collect()
+    }
+
+    fn get_bufferlines_inner(&self, area: Rect) -> Vec<BufferLine> {
         match self {
             PathOrStr::MdPath(_, _) | PathOrStr::MdStr(_) => {
                 let terminal_capabilities = TerminalProgram::detect().capabilities();
