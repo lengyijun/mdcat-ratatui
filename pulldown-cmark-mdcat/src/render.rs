@@ -9,6 +9,7 @@
 use std::io::prelude::*;
 use std::io::Result;
 
+use anstyle::Color;
 use anstyle::{Effects, Style};
 use pulldown_cmark::Event::*;
 use pulldown_cmark::Tag;
@@ -648,10 +649,18 @@ pub fn write_event<'a, W: Write>(
             Ok(stack.current(Inline(InlineBlock, attrs)).and_data(data))
         }
         (Stacked(stack, Inline(state, attrs)), Text(text)) => {
+            let style = Style::new()
+                .bg_color(Some(Color::Ansi(anstyle::AnsiColor::Blue)))
+                .fg_color(Some(Color::Ansi(anstyle::AnsiColor::Black)));
+            let style = if attrs.indent == 2 {
+                &style
+            } else {
+                &attrs.style
+            };
             let current_line = write_styled_and_wrapped(
                 writer,
                 &settings.terminal_capabilities,
-                &attrs.style,
+                style,
                 settings.terminal_size.columns,
                 attrs.indent,
                 data.current_line,
