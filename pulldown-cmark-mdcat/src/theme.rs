@@ -14,21 +14,21 @@ use anstyle::{AnsiColor, Color, Style};
 #[derive(Debug, Clone)]
 pub struct Theme {
     /// Style for HTML blocks.
-    pub(crate) html_block_style: Style,
+    pub html_block_style: Style,
     /// Style for inline HTML.
-    pub(crate) inline_html_style: Style,
+    pub inline_html_style: Style,
     /// Style for code, unless the code is syntax-highlighted.
-    pub(crate) code_style: Style,
+    pub code_style: Style,
     /// Style for links.
-    pub(crate) link_style: Style,
+    pub link_style: Style,
     /// Color for image links (unless the image is rendered inline)
-    pub(crate) image_link_style: Style,
+    pub image_link_style: Style,
     /// Color for rulers.
-    pub(crate) rule_color: Color,
+    pub rule_color: Color,
     /// Color for borders around code blocks.
-    pub(crate) code_block_border_color: Color,
+    pub code_block_border_color: Color,
     /// Color for headings
-    pub(crate) heading_style: Style,
+    pub heading_style: Style,
 }
 
 impl Default for Theme {
