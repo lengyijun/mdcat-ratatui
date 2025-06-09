@@ -652,10 +652,15 @@ pub fn write_event<'a, W: Write>(
             let style = Style::new()
                 .bg_color(Some(Color::Ansi(anstyle::AnsiColor::Blue)))
                 .fg_color(Some(Color::Ansi(anstyle::AnsiColor::Black)));
+            let style = if attrs.indent == 2 {
+                &style
+            } else {
+                &attrs.style
+            };
             let current_line = write_styled_and_wrapped(
                 writer,
                 &settings.terminal_capabilities,
-                &style,
+                style,
                 settings.terminal_size.columns,
                 attrs.indent,
                 data.current_line,
