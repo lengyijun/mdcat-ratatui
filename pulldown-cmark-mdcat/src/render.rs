@@ -606,6 +606,7 @@ pub fn write_event<'a, W: Write>(
         }
         // Inline line breaks
         (Stacked(stack, Inline(state, attrs)), SoftBreak) => {
+            writeln!(writer)?;
             let length = data.current_line.length;
 
             Ok(stack
