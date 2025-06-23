@@ -607,14 +607,10 @@ pub fn write_event<'a, W: Write>(
         // Inline line breaks
         (Stacked(stack, Inline(state, attrs)), SoftBreak) => {
             writeln!(writer)?;
-            let length = data.current_line.length;
 
             Ok(stack
                 .current(Inline(state, attrs))
-                .and_data(data.current_line(CurrentLine {
-                    length,
-                    trailing_space: Some(" ".to_owned()),
-                })))
+                .and_data(data.current_line(CurrentLine::empty())))
         }
         (Stacked(stack, Inline(state, attrs)), HardBreak) => {
             writeln!(writer)?;
